@@ -38,9 +38,6 @@ const MusicPlayer = ({
 			setCurrentSong(songs[n - 1]);
 		}
 	};
-	const ended = () => {
-		next();
-	};
 	const showSingers = () => {
 		const nod = document.getElementById('singer-control').classList;
 		if (nod.contains('hidden')) {
@@ -121,9 +118,9 @@ const MusicPlayer = ({
 					onPlay={() => setPlay(true)}
 					onPause={() => setPlay(false)}
 					showSkipControls={true}
-					onClickNext={next}
-					onClickPrevious={previous}
-					onEnded={ended}
+					onClickNext={() => next()}
+					onClickPrevious={() => previous()}
+					onEnded={() => next()}
 					header={currentSong && <Header />}
 					customProgressBarSection={[
 						RHAP_UI.CURRENT_TIME,

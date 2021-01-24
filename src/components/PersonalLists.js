@@ -79,14 +79,14 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 	};
 	const selectedListDisplay = (id) => {
 		if (selectList && id === selectList.id) {
-			return 'bg-primary p-2 flex justify-between text-white mr-2 shadow-md';
+			return 'bg-primary p-2 flex text-white mr-2 shadow-md flex-col';
 		} else {
 			return 'p-1';
 		}
 	};
 	const playIconDisplay = (id) => {
 		if (selectList && id === selectList.id) {
-			return 'block w-3 h-3 mt-2 md:mt-0 md:w-6 md:h-6 cursor-pointer hover:text-yellow-400';
+			return 'block w-3 h-3 mt-2 md:mt-0 md:w-6 md:h-6 cursor-pointer hover:text-yellow-400 block';
 		} else {
 			return 'hidden';
 		}
@@ -123,7 +123,7 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 					{list.map((doc) => {
 						return (
 							<div className={selectedListDisplay(doc.id)} key={doc.id}>
-								<div>
+								<div className="block">
 									<div onClick={() => arrangeSongs(doc)} className="cursor-pointer inline-block">
 										{doc.name}
 									</div>
