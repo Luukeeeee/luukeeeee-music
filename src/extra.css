@@ -1,0 +1,52 @@
+#progress-bar{
+    position: absolute;
+    z-index: -1;
+}
+#music-list{
+    height: 80vh;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+#music-list::-webkit-scrollbar {
+    display: none;
+}
+#singer-control{
+    height: 80vh;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+#singer-control::-webkit-scrollbar {
+    display: none;
+}
+
+.img-song{
+    width: 36vw;
+    height: 36vw;
+}
+
+.img-disk{
+    width: 90vw;
+}
+
+@media(min-width: 768px) {
+    .img-song{
+        width: 16vw;
+        height: 16vw;
+    }
+    
+    .img-disk{
+        width: 40vw;
+    }
+}
+
+#personal-lists{
+    height: 70vh;
+}
+
+.list-col{
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.list-col::-webkit-scrollbar {
+    display: none;
+}

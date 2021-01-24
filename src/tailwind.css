@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.label{
+    @apply text-primary text-sm cursor-text
+}
+.input{
+    @apply border-gray-400 border rounded-md w-full p-2 my-2 block text-lg text-gray-600
+}
+.song{
+    @apply bg-white m-1 shadow-lg rounded-md flex justify-between
+}
+
+.selected-song{
+    @apply bg-orange-500 my-2 shadow-xl rounded-md flex justify-between text-white
+}
