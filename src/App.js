@@ -131,7 +131,7 @@ function App() {
 
 	return (
 		<div className="App">
-			{auth.currentUser ? (
+			{window.localStorage.getItem('uid') ? (
 				<div className="bg-orange-400 h-screen grid md:grid-cols-2 lg:grid-cols-5 md:gap-2">
 					<div className="lg:col-span-3 md:col-span-1 overflow-y-auto">
 						<MusicList

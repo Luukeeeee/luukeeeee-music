@@ -7,9 +7,21 @@ const SignIn = () => {
 	const [ error, setError ] = useState(null);
 
 	const handleSubmit = (e) => {
-        e.preventDefault();
-        console.log('click')
-		auth.signInWithEmailAndPassword(email, password).then(() => {window.location.reload()}).catch((err) => setError(err.message));
+		e.preventDefault();
+		console.log('click');
+		auth
+			.signInWithEmailAndPassword(email, password)
+			.then(() => {
+				auth.onAuthStateChanged((user) => {
+					if (user) {
+						window.localStorage.setItem('uid', user.uid);
+					} else {
+						window.localStorage.removeItem('uid');
+					}
+				});
+				window.location.reload();
+			})
+			.catch((err) => setError(err.message));
 	};
 
 	return (
@@ -35,12 +47,13 @@ const SignIn = () => {
 						onChange={(e) => setPassword(e.target.value)}
 					/>
 				</label>
-				<span className="uppercase bg-primary text-white p-1 text-sm cursor-pointer hover:opacity-75 flex justify-center" onClick={(e) => handleSubmit(e)}>
+				<span
+					className="uppercase bg-primary text-white p-1 text-sm cursor-pointer hover:opacity-75 flex justify-center"
+					onClick={(e) => handleSubmit(e)}
+				>
 					sign in
 				</span>
-				<span className="text-red-500 text-base text-center">
-					{error}
-				</span>
+				<span className="text-red-500 text-base text-center">{error}</span>
 			</div>
 		</div>
 	);
