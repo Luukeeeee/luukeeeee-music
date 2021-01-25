@@ -115,7 +115,9 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 		<div className="hidden border-2 border-gray-600 m-5" id="personal-lists">
 			<div className="grid grid-cols-8 border-b border-gray-600" onTouchMove={() => swap()}>
 				<div className="col-span-2 flex justify-center">List</div>
-				<div className="col-span-3 flex justify-center">Songs in list {selectList && `(${selectList.name})`}</div>
+				<div className="col-span-3 flex justify-center">
+					Songs in list {selectList && `(${selectList.name})`}
+				</div>
 				<div className="col-span-3 flex justify-center">Rest songs</div>
 			</div>
 			<div className="grid grid-cols-8" style={{ height: '88%' }}>
@@ -127,6 +129,8 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 									<div onClick={() => arrangeSongs(doc)} className="cursor-pointer inline-block">
 										{doc.name}
 									</div>
+								</div>
+								<div className="flex justify-between">
 									<svg
 										className="w-3 h-3 cursor-pointer inline-block ml-2"
 										fill="none"
@@ -144,35 +148,40 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
 										/>
 									</svg>
+									<svg
+										className={playIconDisplay(doc.id)}
+										fill="none"
+										stroke="currentColor"
+										viewBox="0 0 24 24"
+										xmlns="http://www.w3.org/2000/svg"
+										onClick={() => {
+											setMusics(belongArr);
+										}}
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="1"
+											d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+										/>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											strokeWidth="1"
+											d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+										/>
+									</svg>
 								</div>
-								<svg
-									className={playIconDisplay(doc.id)}
-									fill="none"
-									stroke="currentColor"
-									viewBox="0 0 24 24"
-									xmlns="http://www.w3.org/2000/svg"
-									onClick={() => {
-										setMusics(belongArr);
-									}}
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth="1"
-										d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-									/>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										strokeWidth="1"
-										d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-									/>
-								</svg>
 							</div>
 						);
 					})}
 					<div className="flex flex-col items-center justify-center">
-						<input type="text" className="w-20" onChange={(e) => setNewList(e.target.value)} value={newList} />
+						<input
+							type="text"
+							className="w-20"
+							onChange={(e) => setNewList(e.target.value)}
+							value={newList}
+						/>
 						<span
 							className="bg-primary cursor-pointer text-white text-xs px-1 mt-2"
 							onClick={() => handleSubmit()}

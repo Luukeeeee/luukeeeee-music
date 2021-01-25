@@ -202,7 +202,7 @@ const MusicList = ({
 					})}
 			</div>
 			<MusicPlayer
-				songs={musics}
+				musics={musics}
 				setCurrentSong={setCurrentSong}
 				currentSong={currentSong}
 				docs={songs}

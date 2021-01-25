@@ -5,7 +5,7 @@ import pic from '../img/mymusic.jpg';
 import Upload from './Upload';
 
 const MusicPlayer = ({
-	songs,
+	musics,
 	setCurrentSong,
 	currentSong,
 	docs,
@@ -17,25 +17,25 @@ const MusicPlayer = ({
 }) => {
 	const next = () => {
 		if (random) {
-			let n = songs.indexOf(currentSong);
-			let i = Math.floor(Math.random() * songs.length);
+			let n = musics.indexOf(currentSong);
+			let i = Math.floor(Math.random() * musics.length);
 			while (i === n) {
-				i = Math.floor(Math.random() * songs.length);
+				i = Math.floor(Math.random() * musics.length);
 			}
-			setCurrentSong(songs[i]);
+			setCurrentSong(musics[i]);
 		} else {
-			let n = songs.indexOf(currentSong) + 1;
-			if (n < songs.length) {
-				setCurrentSong(songs[n]);
+			let n = musics.indexOf(currentSong) + 1;
+			if (n < musics.length) {
+				setCurrentSong(musics[n]);
 			} else {
-				setCurrentSong(songs[0]);
+				setCurrentSong(musics[0]);
 			}
 		}
 	};
 	const previous = () => {
-		let n = songs.indexOf(currentSong);
+		let n = musics.indexOf(currentSong);
 		if (n > 0) {
-			setCurrentSong(songs[n - 1]);
+			setCurrentSong(musics[n - 1]);
 		}
 	};
 	const showSingers = () => {
@@ -107,7 +107,6 @@ const MusicPlayer = ({
 			/>
 		</div>
 	);
-
 
 	return (
 		<div className="fixed bottom-0 w-full z-10" id="music-player">

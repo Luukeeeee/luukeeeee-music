@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-globals */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from 'react';
 import MusicList from './components/MusicList';
@@ -11,7 +12,7 @@ import PlayingInfo from './components/PlayingInfo';
 import useInterval from 'use-interval';
 import PersonalLists from './components/PersonalLists';
 import EditListModal from './components/Modals/EditListModal';
-import { auth, fs } from './firebase/config';
+import { fs } from './firebase/config';
 import SignIn from './components/SignIn';
 
 function App() {
@@ -43,42 +44,50 @@ function App() {
 	);
 	const recordsRef = fs.collection('records').doc('currentSong');
 	// const storage = window.localStorage;
+	// useEffect(
+	// 	() => {
+	// 		if (Object.keys(currentSong).length > 0) {
+	// 			recordsRef.set(currentSong);
+	// 			// storage.setItem('currentSong', currentSong);
+	// 		}
+	// 	},
+	// 	[ currentSong ]
+	// );
 	useEffect(
 		() => {
-			if (Object.keys(currentSong).length > 0) {
-				recordsRef.update(currentSong);
-				// storage.setItem('currentSong', currentSong);
-			}
-		},
-		[ currentSong ]
-	);
-	useEffect(
-		() => {
-			musics.length > 0 && //storage.setItem('music', JSON.stringify(musics));
-			recordsRef.update({
-				musics: JSON.stringify(musics)
-			});
+			musics.length > 0 &&
+				recordsRef.update({
+					musics: JSON.stringify(musics)
+				});
 		},
 		[ musics ]
 	);
 	let audio = document.querySelector('audio');
 	audio &&
 		audio.addEventListener('pause', () => {
-			recordsRef.update({
-				currentTime: audio.currentTime
-			});
-			// storage.setItem('currentTime', audio.currentTime);
+			if (Object.keys(currentSong).length > 0) {
+				recordsRef.set(currentSong).then(() => {
+					recordsRef.update({
+						currentTime: audio.currentTime
+					});
+				});
+			}
 		});
-	window.addEventListener(
-		'beforeunload',
-		function(e) {
-			recordsRef.update({
-				currentTime: audio.currentTime
+	window.onbeforeunload = function(e) {
+		if (Object.keys(currentSong).length > 0) {
+			recordsRef.set(currentSong).then(() => {
+				recordsRef.update({
+					currentTime: audio.currentTime
+				});
 			});
-			// storage.setItem('currentTime', audio.currentTime);
-		},
-		false
-	);
+		}
+		e.returnValue = 'close?';
+	};
+	// window.addEventListener('beforeunload', function(e) {
+	// 	e.preventDefault();
+	// 	e.returnValue = 'close?';
+	// });
+
 	useEffect(() => {
 		currentSong.name ? (document.title = currentSong.name) : (document.title = "Luukeeeee's Music");
 	});
@@ -113,7 +122,7 @@ function App() {
 	}, []);
 	useEffect(
 		() => {
-			if (currentSong.currentTime) {
+			if (currentSong.currentTime && audio) {
 				audio.currentTime = currentSong.currentTime;
 			}
 		},
