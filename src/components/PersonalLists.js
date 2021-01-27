@@ -79,14 +79,14 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 	};
 	const selectedListDisplay = (id) => {
 		if (selectList && id === selectList.id) {
-			return 'bg-primary p-2 flex text-white mr-2 shadow-md flex-col';
+			return 'bg-primary flex text-white shadow-md flex-col';
 		} else {
-			return 'p-1';
+			return '';
 		}
 	};
 	const playIconDisplay = (id) => {
 		if (selectList && id === selectList.id) {
-			return 'block w-3 h-3 mt-2 md:mt-0 md:w-6 md:h-6 cursor-pointer hover:text-yellow-400 block';
+			return 'block w-6 h-6 my-2 cursor-pointer hover:text-yellow-400 block';
 		} else {
 			return 'hidden';
 		}
@@ -111,6 +111,7 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 				ref.get().then((doc) => arrangeSongs({ ...doc.data(), id: doc.id }));
 			});
 	};
+
 	return (
 		<div className="hidden border-2 border-gray-600 m-5" id="personal-lists">
 			<div className="grid grid-cols-8 border-b border-gray-600" onTouchMove={() => swap()}>
@@ -126,11 +127,9 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 						return (
 							<div className={selectedListDisplay(doc.id)} key={doc.id}>
 								<div className="block">
-									<div onClick={() => arrangeSongs(doc)} className="cursor-pointer inline-block">
+									<div onClick={() => arrangeSongs(doc)} className="cursor-pointer inline-block m-1">
 										{doc.name}
 									</div>
-								</div>
-								<div className="flex justify-between">
 									<svg
 										className="w-3 h-3 cursor-pointer inline-block ml-2"
 										fill="none"
@@ -148,6 +147,8 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 											d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
 										/>
 									</svg>
+								</div>
+								<div className="flex justify-center bg-gray-400">
 									<svg
 										className={playIconDisplay(doc.id)}
 										fill="none"
@@ -193,7 +194,7 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 				<div className="col-span-3 overflow-y-auto list-col">
 					{belongArr.map((song) => {
 						return (
-							<span className="block hover:bg-gray-600 hover:shadow-md" key={song.id}>
+							<span className="block hover:bg-gray-600 hover:shadow-md hover:text-white" key={song.id}>
 								{shortenName(song.name)}
 								<svg
 									className="w-3 h-3 inline-block ml-2 cursor-pointer hover:text-primary"
@@ -217,7 +218,7 @@ const PersonalLists = ({ lists, songs, setMusics }) => {
 				<div className="col-span-3 overflow-y-auto list-col">
 					{notBelongArr.map((song) => {
 						return (
-							<span className="block hover:bg-gray-600 hover:shadow-md" key={song.id}>
+							<span className="block hover:bg-gray-600 hover:shadow-md hover:text-white" key={song.id}>
 								<svg
 									className="w-3 h-3 mr-2 inline-block cursor-pointer hover:text-primary"
 									fill="none"

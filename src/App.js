@@ -14,6 +14,7 @@ import PersonalLists from './components/PersonalLists';
 import EditListModal from './components/Modals/EditListModal';
 import { fs } from './firebase/config';
 import SignIn from './components/SignIn';
+import pic from './img/mymusic.jpg';
 
 function App() {
 	const songs = useFirestore('musics');
@@ -47,8 +48,6 @@ function App() {
 		() => {
 			if (Object.keys(currentSong).length > 0) {
 				audio.addEventListener('pause', () => {
-					console.log('paused');
-
 					recordsRef.set(currentSong).then(() => {
 						recordsRef.update({
 							currentTime: audio.currentTime,
@@ -60,22 +59,7 @@ function App() {
 		},
 		[ currentSong ]
 	);
-	// useEffect(() => {
-	// 	window.addEventListener('beforeunload', (e) => {
-	// 		console.log('paused');
-	// 		if (Object.keys(currentSong).length > 0) {
-	// 			recordsRef.set(currentSong).then(() => {
-	// 				recordsRef.update({
-	// 					currentTime: audio.currentTime,
-	// 					musics: JSON.stringify(musics)
-	// 				});
-	// 			});
-	// 		}
-	// 		e.returnValue = 'close?';
-	// 	});
-	// }, []);
 	window.onbeforeunload = function(e) {
-		console.log('hi');
 		recordsRef.set(currentSong).then(() => {
 			recordsRef.update({
 				currentTime: audio.currentTime,
@@ -95,7 +79,7 @@ function App() {
 		},
 		[ currentSong ]
 	);
-	const getPreRecords = (a) => {
+	const getPreRecords = () => {
 		recordsRef.get().then((doc) => {
 			if (doc.exists) {
 				setCurrentSong(doc.data());
@@ -105,9 +89,10 @@ function App() {
 			}
 		});
 	};
-	useEffect(() => {
+
+	window.addEventListener('load', () => {
 		getPreRecords();
-	}, []);
+	});
 	useEffect(
 		() => {
 			if (currentSong.currentTime && audio) {
@@ -125,6 +110,23 @@ function App() {
 			}
 		});
 	}, play ? 15 : null);
+
+	if ('mediaSession' in navigator) {
+		navigator.mediaSession.metadata = new window.MediaMetadata({
+			title: `${currentSong.name ? currentSong.name : '未知'}`,
+			artist: `${currentSong.singer ? currentSong.singer : '未知'}`,
+			album: `${currentSong.album ? currentSong.album : '未知'}`,
+			artwork: [ { src: `${currentSong.img ? currentSong.img : pic}`, sizes: '128x128', type: 'image/jpg' } ]
+		});
+
+		// TODO: Update playback state.
+		navigator.mediaSession.setActionHandler('previoustrack', function() {
+			document.getElementsByClassName('rhap_skip-button')[0].click();
+		});
+		navigator.mediaSession.setActionHandler('nexttrack', function() {
+			document.getElementsByClassName('rhap_skip-button')[1].click();
+		});
+	}
 
 	return (
 		<div className="App">
