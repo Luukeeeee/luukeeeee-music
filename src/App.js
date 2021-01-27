@@ -35,59 +35,55 @@ function App() {
 
 	useEffect(
 		() => {
-			// if (musics.length === 0) {
-			// 	setMusics(songs.docs);
-			// }
 			setMusics(songs.docs);
 		},
 		[ songs.docs ]
 	);
 	const recordsRef = fs.collection('records').doc('currentSong');
-	// const storage = window.localStorage;
-	// useEffect(
-	// 	() => {
-	// 		if (Object.keys(currentSong).length > 0) {
-	// 			recordsRef.set(currentSong);
-	// 			// storage.setItem('currentSong', currentSong);
-	// 		}
-	// 	},
-	// 	[ currentSong ]
-	// );
+
+	let audio = document.querySelector('audio');
+
 	useEffect(
 		() => {
-			musics.length > 0 &&
-				recordsRef.update({
-					musics: JSON.stringify(musics)
-				});
-		},
-		[ musics ]
-	);
-	let audio = document.querySelector('audio');
-	audio &&
-		audio.addEventListener('pause', () => {
 			if (Object.keys(currentSong).length > 0) {
-				recordsRef.set(currentSong).then(() => {
-					recordsRef.update({
-						currentTime: audio.currentTime
+				audio.addEventListener('pause', () => {
+					console.log('paused');
+
+					recordsRef.set(currentSong).then(() => {
+						recordsRef.update({
+							currentTime: audio.currentTime,
+							musics: JSON.stringify(musics)
+						});
 					});
 				});
 			}
-		});
+		},
+		[ currentSong ]
+	);
+	// useEffect(() => {
+	// 	window.addEventListener('beforeunload', (e) => {
+	// 		console.log('paused');
+	// 		if (Object.keys(currentSong).length > 0) {
+	// 			recordsRef.set(currentSong).then(() => {
+	// 				recordsRef.update({
+	// 					currentTime: audio.currentTime,
+	// 					musics: JSON.stringify(musics)
+	// 				});
+	// 			});
+	// 		}
+	// 		e.returnValue = 'close?';
+	// 	});
+	// }, []);
 	window.onbeforeunload = function(e) {
-		if (Object.keys(currentSong).length > 0) {
-			recordsRef.set(currentSong).then(() => {
-				recordsRef.update({
-					currentTime: audio.currentTime
-				});
+		console.log('hi');
+		recordsRef.set(currentSong).then(() => {
+			recordsRef.update({
+				currentTime: audio.currentTime,
+				musics: JSON.stringify(musics)
 			});
-		}
+		});
 		e.returnValue = 'close?';
 	};
-	// window.addEventListener('beforeunload', function(e) {
-	// 	e.preventDefault();
-	// 	e.returnValue = 'close?';
-	// });
-
 	useEffect(() => {
 		currentSong.name ? (document.title = currentSong.name) : (document.title = "Luukeeeee's Music");
 	});
@@ -108,14 +104,6 @@ function App() {
 				}
 			}
 		});
-		// let storageCurrentSong = storage.getItem('currentSong');
-		// let storageMusics = storage.getItem('music');
-		// // let storageCurrentTime = storage.getItem('currentTime');
-		// storageCurrentSong && setCurrentSong(storageCurrentSong);
-		// storageMusics && setMusics(JSON.parse(storageMusics));
-		// // if (storageCurrentTime) {
-		// // 	audio.currentTime = storageCurrentTime;
-		// // }
 	};
 	useEffect(() => {
 		getPreRecords();
