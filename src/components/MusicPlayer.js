@@ -34,7 +34,10 @@ const MusicPlayer = ({
 	};
 	const previous = () => {
 		let n = musics.indexOf(currentSong);
-		if (n > 0) {
+		let audio = document.querySelector('audio');
+		if(audio.currentTime > 1){
+			audio.currentTime = 0;
+		} else if (n > 0) {
 			setCurrentSong(musics[n - 1]);
 		}
 	};
